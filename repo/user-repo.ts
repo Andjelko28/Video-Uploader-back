@@ -12,8 +12,8 @@ const register = async (user: any) => {
 
 const login = async (user: any) => {
     try {
-        const result = await dbConnection.query(`select * from user where username = ?, email = ? and password_hash = ?`,
-            [user.username, user.email, user.hashedPassword])
+        const result = await dbConnection.query(`select * from users where username = ? and email = ? and password_hash = ?`,
+            [user.username, user.email, user.hashedPassword]);
         return result;
     } catch (e: any) {
         console.log(e);
