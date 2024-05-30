@@ -8,6 +8,7 @@ const register = async (user: any) => {
     if (result.affectedRows > 0) {
         const token = jwt.sign({
             username: user.username,
+            email: user.email,
             isAdmin: false
         }, 'PRIVATE');
         return { succes: true, token }
@@ -16,5 +17,21 @@ const register = async (user: any) => {
     }
 }
 
+const login = async (user: any) => {
+    user.hashedPassword = crypto.createHash('md5').update(user.password).digest('hex');
+    const result = await userRepo.login(user);
 
-export default { register }
+    if (result && result.length > 0) {
+        const token = jwt.sign({
+            username: user.username,
+            email: user.email,
+            isAdmin: result[0].is_admin == 1
+        }, 'PRIVATE');
+        return { succes: true, token };
+    } else {
+        return { succes: false, result };
+    }
+}
+
+
+export default { register, login }

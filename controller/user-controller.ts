@@ -6,4 +6,9 @@ const register = async (req: Request, res: Response) => {
     res.send(result);
 }
 
-export default{register}
+const login = async (req: Request, res: Response) => {
+    const result = await userService.login(req.body);
+    res.send(result);
+}
+
+export default { register, login }
